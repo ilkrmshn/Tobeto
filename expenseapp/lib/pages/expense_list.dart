@@ -1,4 +1,5 @@
 import 'package:expenseapp/models/expense.dart';
+import 'package:expenseapp/widgets/expense_item.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseList extends StatefulWidget {
@@ -22,11 +23,16 @@ class _ExpenseListState extends State<ExpenseList> {
         date: DateTime.now(),
         category: Category.education),
     Expense(
-        name: "Tatil",
+        name: "Gezi",
         price: 500,
         date: DateTime.now(),
         category: Category.travel),
-  ]; // firebase,veritabanı
+    Expense(
+        name: "Hammadde",
+        price: 700,
+        date: DateTime.now(),
+        category: Category.work),
+  ]; 
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +42,14 @@ class _ExpenseListState extends State<ExpenseList> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
-            height: 300,
+            height: 150,
             child: Text("Grafik"),
           ),
           Expanded(
             child: ListView.builder(
               itemCount: expenses.length,
               itemBuilder: (context, index) {
-                return Text(expenses[index].name);
+                return ExpenseItem(expenses[index]);
               },
             ),
           ),
@@ -52,3 +58,4 @@ class _ExpenseListState extends State<ExpenseList> {
     );
   }
 }
+// Topbar eklemek vs..
