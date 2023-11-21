@@ -20,19 +20,48 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final List<Expense> expenses = [];
-
+  //final List<Expense> expenses = [];
+  final List<Expense> expenses = [
+    Expense(
+        name: "Yiyecek",
+        price: 200.524,
+        date: DateTime.now(),
+        category: Category.food),
+    Expense(
+        name: "Flutter Udemy Course",
+        price: 200,
+        date: DateTime.now(),
+        category: Category.education),
+  ];
   void _addExpense(Expense newExpense) {
     setState(() {
       expenses.add(newExpense);
     });
   }
 
+  void removeExpense(Expense expense) {
+    setState(() {
+      expenses.remove(expense);
+      _showDeleteSnackbar(context, expense);
+    });
+  }
+
+  void _undoRemoveExpense(Expense expense) {
+    setState(() {
+      expenses.add(expense);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Expense restored'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
         title: const Text("ExpenseApp"),
         actions: [
           IconButton(
@@ -48,7 +77,23 @@ class _MainPageState extends State<MainPage> {
           )
         ],
       ),
-      body: ExpenseList(expenses: expenses),
+      body: ExpenseList(expenses: expenses, onRemove: removeExpense),
+    );
+  }
+
+  void _showDeleteSnackbar(BuildContext context, Expense expense) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Expense deleted'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            _undoRemoveExpense(expense);
+            scaffold.hideCurrentSnackBar();
+          },
+        ),
+      ),
     );
   }
 }
