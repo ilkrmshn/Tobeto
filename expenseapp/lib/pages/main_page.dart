@@ -77,7 +77,9 @@ class _MainPageState extends State<MainPage> {
           )
         ],
       ),
-      body: ExpenseList(expenses: expenses, onRemove: removeExpense),
+      body: expenses.length > 0
+          ? ExpenseList(expenses: expenses, onRemove: removeExpense)
+          : Text("Henüz hiç bir veri girmediniz.."),
     );
   }
 
