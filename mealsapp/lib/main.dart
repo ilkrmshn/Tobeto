@@ -8,5 +8,8 @@ final theme = ThemeData(
         seedColor: const Color.fromARGB(255, 212, 212, 30)));
 
 void main() {
-  runApp(MaterialApp(theme: theme, home: const Categories()));
+  runApp(MaterialApp(
+      theme: theme,
+      debugShowCheckedModeBanner: false,
+      home: const Categories()));
 }

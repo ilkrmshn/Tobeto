@@ -16,7 +16,7 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Drawer Header',
+              'Tarifler',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -24,19 +24,25 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('Ana Sayfa'),
+            title: const Text('Başlangıçlar'),
             onTap: () {
               Navigator.pop(context); 
             },
           ),
           ListTile(
-            title: const Text('Profil'),
+            title: const Text('Ara Sıcaklar'),
             onTap: () {
               Navigator.pop(context); 
             },
           ),
           ListTile(
-            title: const Text('Hakkında'),
+            title: const Text('Ana Yemekler'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Tatlılar'),
             onTap: () {
               Navigator.pop(context);
             },
