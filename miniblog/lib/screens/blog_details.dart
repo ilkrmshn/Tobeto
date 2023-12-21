@@ -53,7 +53,7 @@ class _BlogDetailState extends State<BlogDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.teal[300],
         title: Text(_blog.title ?? ''),
       ),
       body: Padding(

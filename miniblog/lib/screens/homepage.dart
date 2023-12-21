@@ -37,7 +37,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.deepOrangeAccent,
+          backgroundColor: Colors.teal[300],
           title: const Text("Bloglar"),
           actions: [
             IconButton(
@@ -68,7 +68,6 @@ class _HomepageState extends State<Homepage> {
                                     BlogDetail(blogId: "${blogs[index].id}"),
                               ),
                             );
-                            print("Tıklanan öğe: ${blogs[index].id}");
                           },
                           child: BlogItem(blog: blogs[index]),
                         ),
