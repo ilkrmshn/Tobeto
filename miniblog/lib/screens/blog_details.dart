@@ -35,7 +35,6 @@ class _BlogDetailState extends State<BlogDetail> {
           isLoaded = true;
           return Text("İstek atılmalı..");
         }
-
         if (state is ArticlesDetailLoaded) {
           return Center(
               child: Column(

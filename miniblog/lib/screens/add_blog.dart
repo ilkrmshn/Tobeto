@@ -31,26 +31,6 @@ class _AddBlogState extends State<AddBlog> {
     });
   }
 
-  submitForm() async {
-    Uri url = Uri.parse("https://tobetoapi.halitkalayci.com/api/Articles");
-    var request = http.MultipartRequest("POST", url);
-
-    if (selectedImage != null) {
-      request.files
-          .add(await http.MultipartFile.fromPath("File", selectedImage!.path));
-    }
-
-    request.fields['Title'] = title;
-    request.fields['Content'] = content;
-    request.fields['Author'] = author;
-
-    final response = await request.send();
-
-    if (response.statusCode == 201) {
-      Navigator.pop(context, true);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
