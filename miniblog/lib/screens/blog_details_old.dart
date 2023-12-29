@@ -4,7 +4,7 @@ import 'package:miniblog/models/blog.dart';
 class BlogDetail extends StatelessWidget {
   final Blog blog;
 
-  const BlogDetail({Key? key, required this.blog}) : super(key: key);
+  const BlogDetail({Key? key, required this.blog, required String id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import "package:http/http.dart" as http;
+import 'package:miniblog/blocs/article_bloc/article_bloc.dart';
+import 'package:miniblog/blocs/article_bloc/article_event.dart';
+import 'package:miniblog/models/blog.dart';
 
 class AddBlog extends StatefulWidget {
   const AddBlog({super.key});
@@ -107,7 +111,15 @@ class _AddBlogState extends State<AddBlog> {
                         }
                         // Validasyonlar başarılı
                         _formKey.currentState!.save();
-                        submitForm();
+                        var blog = Blog(
+                            id: "",
+                            title: title,
+                            content: content,
+                            thumbnail: selectedImage!.path,
+                            author: author);
+                        context
+                            .read<ArticleBloc>()
+                            .add(AddArticle(blog: blog, context: context));
                       }
                     },
                     child: const Text("Gönder"))

@@ -1,70 +1,49 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:miniblog/models/blog.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:miniblog/blocs/article_bloc/article_bloc.dart';
+import 'package:miniblog/blocs/article_bloc/article_event.dart';
+import 'package:miniblog/blocs/article_bloc/article_state.dart';
 
 class BlogDetail extends StatefulWidget {
-  final String blogId;
+  final String id;
 
-  const BlogDetail({Key? key, required this.blogId}) : super(key: key);
+  const BlogDetail({Key? key, required this.id}) : super(key: key);
 
   @override
   _BlogDetailState createState() => _BlogDetailState();
 }
 
 class _BlogDetailState extends State<BlogDetail> {
-  late Blog _blog;
+  bool isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    _blog = Blog(); // Başlangıç değeri atanabilir
-    fetchBlogDetails();
-  }
-
-  void fetchBlogDetails() async {
-    Uri url = Uri.parse(
-        "https://tobetoapi.halitkalayci.com/api/Articles/${widget.blogId}");
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonData = json.decode(response.body);
-      setState(() {
-        _blog = Blog.fromJson(jsonData);
-      });
-    } else {
-      print('Hata oluştu! ${response.statusCode}');
+    // Eğer detay daha önce yüklenmediyse, yükle
+    if (!isLoaded) {
+      context.read<ArticleBloc>().add(FetchArticleDetail(id: widget.id));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_blog.id == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Yükleniyor...'),
-        ),
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.teal[300],
-        title: Text(_blog.title ?? ''),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
+      appBar: AppBar(title: const Text("Detay")),
+      body: BlocBuilder<ArticleBloc, ArticleState>(builder: (context, state) {
+        if (state is ArticlesInitial) {
+          context.read<ArticleBloc>().add(FetchArticleDetail(id: widget.id));
+          isLoaded = true;
+          return Text("İstek atılmalı..");
+        }
+
+        if (state is ArticlesDetailLoaded) {
+          return Center(
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               //Text('ID: ${_blog.id}'),
-              Text('${_blog.title}',
+              Text('${state.blog.title}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20.0,
@@ -74,11 +53,12 @@ class _BlogDetailState extends State<BlogDetail> {
                 height: 10,
               ),
               AspectRatio(
-                  aspectRatio: 16 / 9, child: Image.network(_blog.thumbnail!)),
+                  aspectRatio: 16 / 9,
+                  child: Image.network(state.blog.thumbnail!)),
               const SizedBox(
                 height: 20,
               ),
-              Text('${_blog.content}',
+              Text('${state.blog.content}',
                   style: const TextStyle(
                     fontSize: 18.0,
                   )),
@@ -86,16 +66,20 @@ class _BlogDetailState extends State<BlogDetail> {
                 height: 10,
               ),
               Text(
-                '${_blog.author}',
+                '${state.blog.author}',
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontStyle: FontStyle.italic,
                 ),
               ),
             ],
-          ),
-        ),
-      ),
+          ));
+        }
+
+        return Center(
+          child: Text(widget.id),
+        );
+      }),
     );
   }
 }
